@@ -16,6 +16,9 @@ Each module is located in its respective directory and is designed to be reusabl
 - Subnets Module: Configures subnets within a VPC, including CIDR blocks and routing.
 - Users Module: Manages IAM users and their permissions.
 - VPC Module: Sets up a Virtual Private Cloud with associated components like subnets and route tables.
+- SSL Module: Uploads SSL certificates to AWS to be used in the Load Balancer Module
+- Load Balancer Module: Configures a load balancer between 2 or more EC2 hosting web servers
+- RDS Database Module: Configures a Postgres database with customizables parameters.
 
 
 ## How To
@@ -60,7 +63,7 @@ terraform validate
 Verify that it creates the resources you want
 
 ```bash
-terraform plan -var-file="main_variables.tfvars"
+terraform plan
 ```
 
 8. Apply the configuration
@@ -68,13 +71,13 @@ terraform plan -var-file="main_variables.tfvars"
 This command will actually provision the infrastructure
 
 ```bash
-terraform apply -var-file="main_variables.tfvars"
+terraform apply
 ```
 
 9. You can delete all the infrastructure with the following command:
 
 ```bash
-terraform destroy -var-file="main_variables.tfvars"
+terraform destroy
 ```
 
 ## Disclaimer

@@ -39,3 +39,71 @@ resource "aws_security_group" "allow_ssh_and_ping" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
+
+resource "aws_security_group" "sg_for_elb" {
+  name = "sg_for_elb"
+  vpc_id = var.vpc_id
+
+  ingress {
+    description = "Allow HTTP request from any"
+    protocol = "tcp"
+    from_port = 80
+    to_port = 80
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "Allow HTTPS request from any"
+    protocol = "tcp"
+    from_port = 443
+    to_port = 443
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+resource "aws_security_group" "sg_allow_from_elb" {
+  name = "sg_allow_from_elb"
+  vpc_id = var.vpc_id
+
+  ingress {
+    description = "Allow HTTP traffic only from the ELB security group"
+    protocol = "tcp"
+    from_port = 80
+    to_port = 80
+    security_groups = [aws_security_group.sg_for_elb.id]
+  }
+
+  egress {
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+resource "aws_security_group" "postgres_security_group" {
+  name = "postgres-sg"
+  description = "Allow PostgreSQL inbound"
+  vpc_id = var.vpc_id
+
+  ingress {
+    from_port = 5432
+    to_port = 5432
+    protocol = "tcp"
+    cidr_blocks = var.my_ip_cidr
+  }
+  
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}

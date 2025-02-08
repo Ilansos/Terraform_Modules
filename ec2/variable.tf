@@ -7,6 +7,9 @@ variable "ec2_instances" {
     vpc_security_group_ids = list(string)
     subnet_id = string
     private_ip = string
+    root_volume_size = number
+    volume_type = string
+    delete_on_termination = bool
     tags = map(string)
   }))
 }

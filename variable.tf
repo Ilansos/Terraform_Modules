@@ -29,3 +29,33 @@ variable "ssh_keys" {
     path = string
   }))
 }
+
+variable "my_ip_cidr" {
+  type = list(string)
+}
+
+variable "ssl_certificates" {
+  type = list(object({
+    key_file_path = string
+    crt_file_path = string
+    intermediate_file_path = string
+  }))
+}
+
+variable "postgress_user" {
+  type = string
+  sensitive = true
+}
+
+variable "postgres_password" {
+  type = string
+  sensitive = true
+}
+
+variable "vpc_configuration" {
+  type = object({
+    cidr = string
+    enable_dns_support = bool
+    enable_dns_hostnames = bool
+  })
+}

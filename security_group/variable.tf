@@ -13,3 +13,8 @@ variable "ssh_allow_cidr" {
 variable "icmp_allow_cidr" {
   default = ["1.1.1.1/32"] # This is the Cloudflare DNS IP, replace it with the CIDR you need
 }
+
+variable "my_ip_cidr" {
+  type = list(string)
+  default = ["1.1.1.1/32"]
+}

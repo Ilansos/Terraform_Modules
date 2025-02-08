@@ -7,17 +7,35 @@
 # - Associate the Route Table to the Public Subnet          #
 #############################################################
 
-resource "aws_subnet" "public_subnet" {
+resource "aws_subnet" "public_subnet1" {
   # This variable will take the output of the VPC module
   # We will configure to take the relevant output on the main.tf file of the main project
   vpc_id = var.vpc_id
   # We configured the content of this variable on the variable.tf file in this folder
-  cidr_block = var.public_subnet_cidr
+  cidr_block = var.public_subnet1_cidr
   # We set that every instance in this subnet will receive a public IP on Launch
   map_public_ip_on_launch = true
+  # We can set also the availability zone for the subnet
+  availability_zone = var.public_subnet_1_availability_zone
   # We set the tags we want to add to this subnet
   tags = {
-    Name = "Public_Subnet"
+    Name = "Public_Subnet_1"
+  }
+}
+
+resource "aws_subnet" "public_subnet2" {
+  # This variable will take the output of the VPC module
+  # We will configure to take the relevant output on the main.tf file of the main project
+  vpc_id = var.vpc_id
+  # We configured the content of this variable on the variable.tf file in this folder
+  cidr_block = var.public_subnet2_cidr
+  # We set that every instance in this subnet will receive a public IP on Launch
+  map_public_ip_on_launch = true
+  # We can set also the availability zone for the subnet
+  availability_zone = var.public_subnet_2_availability_zone
+  # We set the tags we want to add to this subnet
+  tags = {
+    Name = "Public_Subnet_2"
   }
 }
 
@@ -40,9 +58,17 @@ resource "aws_route_table" "public_subnet_route_table" {
 }
 
 # Here we associate the route table to the public subnet
-resource "aws_route_table_association" "public_subnet_association" {
+resource "aws_route_table_association" "public_subnet1_association" {
   # We need to give the correct id of the public subnet
-  subnet_id = aws_subnet.public_subnet.id
+  subnet_id = aws_subnet.public_subnet1.id
+  # We also need to give the correct id of the route table
+  route_table_id = aws_route_table.public_subnet_route_table.id
+}
+
+# Here we associate the route table to the public subnet
+resource "aws_route_table_association" "public_subnet2_association" {
+  # We need to give the correct id of the public subnet
+  subnet_id = aws_subnet.public_subnet2.id
   # We also need to give the correct id of the route table
   route_table_id = aws_route_table.public_subnet_route_table.id
 }
